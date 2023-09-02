@@ -17,6 +17,12 @@ public class Solution {
      * https://leetcode.com/problems/maximum-average-subarray-i/
      *
      *  643. Maximum Average Subarray I
+     *
+     *
+     *  https://leetcode.com/problems/largest-subarray-length-k/
+     *
+     *  If we return only sum without dividing with length of array, it is solved task.
+     *
      * */
 
 
