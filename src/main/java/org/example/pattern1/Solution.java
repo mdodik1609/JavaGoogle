@@ -14,6 +14,9 @@ public class Solution {
         System.out.println(longestSubstringWithKdistinct("araaci", 1));
         System.out.println(longestSubstringWithKdistinct("cbbebi", 3));
 
+
+        System.out.println(totalFruit(new int[]{1,2,1}));
+
     }
 
 
@@ -106,6 +109,41 @@ public class Solution {
                 windowStart++;
             }
             result = Math.max(result, i - windowStart);
+        }
+
+        return result;
+    }
+
+    /**
+     * https://leetcode.com/problems/fruit-into-baskets/
+     *
+     * 904. Fruit Into Baskets
+     * */
+
+    public static int totalFruit(int[] fruits) {
+        int result = 0;
+
+        int l = fruits.length;
+        int windowStart = 0;
+        HashMap<Integer, Integer> fruitFreq = new HashMap<>();
+
+        for(int i = 0; i < l; i++) {
+            int endInt = fruits[i];
+            if(!fruitFreq.containsKey(endInt)) {
+                fruitFreq.put(endInt, 0);
+            }
+            fruitFreq.replace(endInt, fruitFreq.get(endInt) + 1);
+
+            while (fruitFreq.size() > 2) {
+                //removing chars from the start
+                int startInt = fruits[windowStart];
+                fruitFreq.replace(startInt, fruitFreq.get(startInt) - 1);
+                if(fruitFreq.get(startInt) == 0) {
+                    fruitFreq.remove(startInt);
+                }
+                windowStart++;
+            }
+            result = Math.max(result, i - windowStart + 1);
         }
 
         return result;
