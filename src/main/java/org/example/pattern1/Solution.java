@@ -1,6 +1,6 @@
 package org.example.pattern1;
 
-import java.util.Arrays;
+import java.util.HashMap;
 
 public class Solution {
 
@@ -9,6 +9,10 @@ public class Solution {
         System.out.println(findMaxAverage(new int[]{0,1,1,3,3}, 4));
         System.out.println(findMaxAverage(new int[]{0,4,0,3,2}, 1));
 
+
+        System.out.println(longestSubstringWithKdistinct("araaci", 2));
+        System.out.println(longestSubstringWithKdistinct("araaci", 1));
+        System.out.println(longestSubstringWithKdistinct("cbbebi", 3));
 
     }
 
@@ -69,5 +73,41 @@ public class Solution {
         }
 
         return min == Integer.MAX_VALUE ? 0 : min;
+    }
+
+
+    /**
+     * https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
+     *
+     * Longest substring with at most k distinct characters
+     * */
+    public static int longestSubstringWithKdistinct(String s, int k){
+        int result = 0;
+        if(s.isEmpty()) return 0;
+
+        int l = s.length();
+        int windowStart = 0;
+        HashMap<Character, Integer> charFrequency = new HashMap<>();
+
+        for(int i = 0; i < l; i++) {
+            char endChar = s.charAt(i);
+            if(!charFrequency.containsKey(endChar)) {
+                charFrequency.put(endChar, 0);
+            }
+            charFrequency.replace(endChar, charFrequency.get(endChar) + 1);
+
+            while (charFrequency.values().stream().anyMatch(it -> it > k)) {
+                //removing chars from the start
+                char startChar = s.charAt(windowStart);
+                charFrequency.replace(startChar, charFrequency.get(startChar) - 1);
+                if(charFrequency.get(startChar) == 0) {
+                    charFrequency.remove(startChar);
+                }
+                windowStart++;
+            }
+            result = Math.max(result, i - windowStart);
+        }
+
+        return result;
     }
 }
