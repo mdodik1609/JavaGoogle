@@ -5,17 +5,19 @@ import java.util.HashMap;
 public class Solution {
 
     public static void main(String[] args) {
-        System.out.println(findMaxAverage(new int[]{1,12,-5,-6,50,3}, 4));
-        System.out.println(findMaxAverage(new int[]{0,1,1,3,3}, 4));
-        System.out.println(findMaxAverage(new int[]{0,4,0,3,2}, 1));
+//        System.out.println(findMaxAverage(new int[]{1,12,-5,-6,50,3}, 4));
+//        System.out.println(findMaxAverage(new int[]{0,1,1,3,3}, 4));
+//        System.out.println(findMaxAverage(new int[]{0,4,0,3,2}, 1));
+//
+//
+//        System.out.println(longestSubstringWithKdistinct("araaci", 2));
+//        System.out.println(longestSubstringWithKdistinct("araaci", 1));
+//        System.out.println(longestSubstringWithKdistinct("cbbebi", 3));
+//
+//
+//        System.out.println(totalFruit(new int[]{1,2,1}));
 
-
-        System.out.println(longestSubstringWithKdistinct("araaci", 2));
-        System.out.println(longestSubstringWithKdistinct("araaci", 1));
-        System.out.println(longestSubstringWithKdistinct("cbbebi", 3));
-
-
-        System.out.println(totalFruit(new int[]{1,2,1}));
+        System.out.println(lengthOfLongestSubstring("1231"));
 
     }
 
@@ -140,6 +142,44 @@ public class Solution {
                 fruitFreq.replace(startInt, fruitFreq.get(startInt) - 1);
                 if(fruitFreq.get(startInt) == 0) {
                     fruitFreq.remove(startInt);
+                }
+                windowStart++;
+            }
+            result = Math.max(result, i - windowStart + 1);
+        }
+
+        return result;
+    }
+
+    /**
+     *
+     * https://leetcode.com/problems/longest-substring-without-repeating-characters/
+     *
+     *
+     * 3. Longest Substring Without Repeating Characters
+     *
+     * */
+
+    public static int lengthOfLongestSubstring(String s) {
+        int result = 0;
+
+        int l = s.length();
+        int windowStart = 0;
+        HashMap<Character, Integer> charFrequency = new HashMap<>();
+
+        for(int i = 0; i < l; i++) {
+            char endChar = s.charAt(i);
+            if(!charFrequency.containsKey(endChar)) {
+                charFrequency.put(endChar, 0);
+            }
+            charFrequency.replace(endChar, charFrequency.get(endChar) + 1);
+
+            while (charFrequency.values().stream().anyMatch(it -> it > 1)) {
+                //removing chars from the start
+                char startChar = s.charAt(windowStart);
+                charFrequency.replace(startChar, charFrequency.get(startChar) - 1);
+                if(charFrequency.get(startChar) == 0) {
+                    charFrequency.remove(startChar);
                 }
                 windowStart++;
             }
