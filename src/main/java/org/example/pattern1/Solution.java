@@ -19,7 +19,10 @@ public class Solution {
 
 //        System.out.println(lengthOfLongestSubstring("1231"));
 
-        System.out.println(longestOnes(new int[]{1,1,1,0,0,0,1,1,1,1,0}, 2));
+//        System.out.println(longestOnes(new int[]{1,1,1,0,0,0,1,1,1,1,0}, 2));
+
+//        System.out.println(checkInclusion("ab", "eidbaooo"));
+        System.out.println(checkInclusion("ab", "eidboaoo"));
 
     }
 
@@ -219,5 +222,53 @@ public class Solution {
         }
 
         return result;
+    }
+
+
+    /**
+     * https://leetcode.com/problems/permutation-in-string/
+     *
+     * 567. Permutation in String
+     * */
+    public static boolean checkInclusion(String s1, String s2) {
+        HashMap<Character, Integer> characterFrequency = new HashMap<>();
+
+        for(int i = 0; i < s1.length(); i++) {
+            if(!characterFrequency.containsKey(s1.charAt(i))) {
+                characterFrequency.put(s1.charAt(i), 0);
+            }
+            characterFrequency.replace(
+                    s1.charAt(i),
+                    characterFrequency.get(s1.charAt(i)) + 1
+            );
+        }
+
+        int start = 0;
+        int match = 0;
+        for(int i = 0; i < s2.length(); i++) {
+            char currentChar = s2.charAt(i);
+            if(characterFrequency.containsKey(currentChar)){
+                characterFrequency.replace(currentChar, characterFrequency.get(currentChar) - 1);
+                if(characterFrequency.get(currentChar) == 0) {
+                    match++;
+                }
+            }
+
+            if(match == characterFrequency.keySet().size()) {
+                return true;
+            }
+
+            if(i >=  s1.length() - 1) {
+                char tempChar = s2.charAt(start);
+                start++;
+                if(characterFrequency.containsKey(tempChar)){
+                    if(characterFrequency.get(tempChar) == 0) {
+                        match--;
+                    }
+                    characterFrequency.replace(tempChar, characterFrequency.get(tempChar) + 1);
+                }
+            }
+        }
+        return false;
     }
 }
