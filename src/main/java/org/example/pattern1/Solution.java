@@ -1,6 +1,7 @@
 package org.example.pattern1;
 
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solution {
 
@@ -271,4 +272,46 @@ public class Solution {
         }
         return false;
     }
+
+    /**
+     * https://leetcode.com/problems/substring-with-concatenation-of-all-words/
+     *
+     * 30. Substring with Concatenation of All Words
+     * */
+    public static List<Integer> findSubstring(String str, String[] words) {
+        List<Integer> resultIndex = new ArrayList<>();
+        if (words.length == 0 || words[0].length() == 0) {
+            return resultIndex;
+        }
+        Map<String, Integer> wordFreq = new HashMap<>();
+        for (String word : words) {
+            wordFreq.put(word, wordFreq.getOrDefault(word, 0) + 1);
+        }
+        int wordCount = words.length;
+        int wordLength = words[0].length();
+        for (int i = 0; i < str.length() - wordCount * wordLength + 1; i++) {
+            Map<String, Integer> wordsSeen = new HashMap<>();
+            for (int j = 0; j < wordCount; j++) {
+                int nextWordIndex = i + j * wordLength;
+                // Get the next word from the string
+                String word = str.substring(nextWordIndex, nextWordIndex + wordLength);
+                if (!wordFreq.containsKey(word)) {
+                    // Break if we don't need this word
+                    break;
+                }
+                // Add the word to the wordsSeen map
+                wordsSeen.put(word, wordsSeen.getOrDefault(word, 0) + 1);
+                // No need to process further if the word has a higher frequency than required
+                if (wordsSeen.get(word) > wordFreq.getOrDefault(word, 0)) {
+                    break;
+                }
+                if (j + 1 == wordCount) {
+                    // Store index if we have found all the words
+                    resultIndex.add(i);
+                }
+            }
+        }
+        return resultIndex;
+    }
+
 }
