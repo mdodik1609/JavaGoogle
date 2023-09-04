@@ -17,7 +17,9 @@ public class Solution {
 //
 //        System.out.println(totalFruit(new int[]{1,2,1}));
 
-        System.out.println(lengthOfLongestSubstring("1231"));
+//        System.out.println(lengthOfLongestSubstring("1231"));
+
+        System.out.println(longestOnes(new int[]{1,1,1,0,0,0,1,1,1,1,0}, 2));
 
     }
 
@@ -180,6 +182,36 @@ public class Solution {
                 charFrequency.replace(startChar, charFrequency.get(startChar) - 1);
                 if(charFrequency.get(startChar) == 0) {
                     charFrequency.remove(startChar);
+                }
+                windowStart++;
+            }
+            result = Math.max(result, i - windowStart + 1);
+        }
+
+        return result;
+    }
+
+
+    /**
+     * https://leetcode.com/problems/max-consecutive-ones-iii/
+     *
+     * 1004. Max Consecutive Ones III
+     * */
+    public static int longestOnes(int[] nums, int k) {
+        if(nums.length == 0) return 0;
+        int result = 0;
+
+        int l = nums.length;
+        int windowStart = 0;
+        int zeros = 0;
+
+        for(int i = 0; i < l; i++) {
+            if(nums[i] == 0) {
+                zeros++;
+            }
+            while(zeros > k) {
+                if(nums[windowStart] == 0) {
+                    zeros--;
                 }
                 windowStart++;
             }
