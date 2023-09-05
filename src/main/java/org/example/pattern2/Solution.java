@@ -1,8 +1,8 @@
 package org.example.pattern2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 public class Solution {
     public static void main(String[] args){
@@ -14,7 +14,10 @@ public class Solution {
 
 //        Arrays.stream(sortedSquares(new int[]{-7,-3,2,3,11})).forEach( it -> System.out.print(it + ","));
 
-        System.out.println(threeSumClosest(new int[]{-1,2,1,-4}, 1));
+//        System.out.println(threeSumClosest(new int[]{-1,2,1,-4}, 1));
+
+        System.out.println(numSubarrayProductLessThanK(new int[]{10,5,2,6}, 100));
+        System.out.println(numSubarrayProductLessThanK(new int[]{1,2,3}, 0));
     }
 
     /**
@@ -88,5 +91,31 @@ public class Solution {
         return result;
     }
 
+    /**
+     *  https://leetcode.com/problems/subarray-product-less-than-k/
+     *
+     *  713. Subarray Product Less Than K
+     * */
+    public static int numSubarrayProductLessThanK(int[] nums, int target) {
+        if(target<=1) return 0;
 
+        int result=0;
+        int mul=nums[0];
+        if(mul<target)  result++;
+        int left=0;
+        int right=1;
+        while(right!=nums.length){
+            int val=nums[right];
+            mul=mul*val;
+            if (mul >= target) {
+                while (mul >= target) {
+                    mul = mul / nums[left];
+                    left++;
+                }
+            }
+            result+=right-left+1;
+            right++;
+        }
+        return result;
+    }
 }
