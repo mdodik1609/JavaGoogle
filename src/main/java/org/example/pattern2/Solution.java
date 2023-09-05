@@ -118,4 +118,29 @@ public class Solution {
         }
         return result;
     }
+
+    /**
+     *  https://leetcode.com/problems/sort-colors/
+     *
+     *  75. Sort Colors
+     *
+     * */
+    public static void sortColors(int[] nums) {
+        int i = 0;
+        int zeros = 0;
+        int twos = nums.length - 1;
+        while(i <= twos) {
+            if(nums[i] == 0) {
+                nums[i] = nums[zeros];
+                nums[zeros] = 0;
+                i++; zeros++;
+            } else if(nums[i] == 1) {
+                i++;
+            } else {
+                nums[i] = nums[twos];
+                nums[twos] = 2;
+                twos--;
+            }
+        }
+    }
 }
