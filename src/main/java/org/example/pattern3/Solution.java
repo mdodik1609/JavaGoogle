@@ -192,6 +192,41 @@ public class Solution {
         }
     }
 
+    /**
+     *  https://leetcode.com/problems/circular-array-loop/description/
+     *
+     *  457. Circular Array Loop
+     * */
+    public static boolean circularArrayLoop(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            boolean direction = nums[i] > 0;
+            int slow = i;
+            int fast = i;
+
+            do {
+                slow = getNextIndex(nums, direction, slow);
+                fast = getNextIndex(nums, direction, fast);
+                if (fast != -1)
+                    fast = getNextIndex(nums, direction, fast);
+            } while (slow != -1 && fast != -1 && slow != fast);
+
+            if (slow != -1 && slow == fast)
+                return true;
+        }
+        return false;
+    }
+
+    public static int getNextIndex(int[] nums, boolean direction, int i) {
+        boolean currentDirection = nums[i] > 0;
+        if ((currentDirection && !direction)  ||
+                (!currentDirection && direction))
+            return -1;
+        var n = nums.length;
+        var nextIndex = (i + nums[i]) % n;
+        if (nextIndex < 0)
+            nextIndex += n;
+        return nextIndex == i ? -1 : nextIndex;
+    }
 }
 
 
