@@ -66,6 +66,34 @@ public class Solution {
         }
         return null;
     }
+
+    /**
+     *  https://leetcode.com/problems/happy-number/
+     *
+     *  202. Happy number
+     * */
+    public static boolean isHappy(int n) {
+        int slow = n;
+        int fast = n;
+
+        while(true) {
+            slow = findSquareSum(slow);
+            fast = findSquareSum(findSquareSum(fast));
+
+            if(slow == fast) break; //found a cycle
+        }
+        return slow == 1;
+    }
+    public static int findSquareSum(int n) {
+        int result = 0;
+        while(n > 0) {
+            int digit = n % 10;
+            result += Math.pow(digit, 2);
+            n = (int) Math.floor(n / 10);
+        }
+        return result;
+    }
+
 }
 
 
