@@ -41,6 +41,31 @@ public class Solution {
         }
         return false;
     }
+
+    /**
+     *  https://leetcode.com/problems/linked-list-cycle-ii/description/
+     *
+     *  142. Linked List Cycle II
+     * */
+    public static ListNode detectCycle(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        ListNode cache = head;
+
+        while(fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+
+            if(slow == fast) {
+                while (cache != slow) {
+                    cache = cache.next;
+                    slow = slow.next;
+                }
+                return slow;
+            }
+        }
+        return null;
+    }
 }
 
 
