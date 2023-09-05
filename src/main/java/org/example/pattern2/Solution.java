@@ -12,7 +12,9 @@ public class Solution {
 //        System.out.println("\n====================");
 //        Arrays.stream(twoSum(new int[]{3,2,4}, 6)).forEach( it -> System.out.print(it));
 
-        Arrays.stream(sortedSquares(new int[]{-7,-3,2,3,11})).forEach( it -> System.out.print(it + ","));
+//        Arrays.stream(sortedSquares(new int[]{-7,-3,2,3,11})).forEach( it -> System.out.print(it + ","));
+
+        System.out.println(threeSumClosest(new int[]{-1,2,1,-4}, 1));
     }
 
     /**
@@ -60,4 +62,31 @@ public class Solution {
         }
         return result;
     }
+
+    /**
+     *  https://leetcode.com/problems/3sum-closest/description/
+     *
+     *  16. 3Sum Closest
+     * */
+    public static int threeSumClosest(int[] nums, int target) {
+        int result = Integer.MAX_VALUE;
+        int l = nums.length;
+
+        Arrays.sort(nums);
+
+        for(int i = 0; i < l - 2; i++) {
+            int pivotL = i + 1;
+            int pivotR = l - 1;
+            while (pivotL < pivotR) {
+                var sum = nums[i] + nums[pivotL] + nums[pivotR];
+                if (sum > target) pivotR--;
+                else pivotL++;
+                if (Math.abs(sum - target) < Math.abs(result - target)) result = sum;
+            }
+        }
+
+        return result;
+    }
+
+
 }
