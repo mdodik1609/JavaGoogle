@@ -16,8 +16,13 @@ public class Solution {
 
 //        System.out.println(threeSumClosest(new int[]{-1,2,1,-4}, 1));
 
-        System.out.println(numSubarrayProductLessThanK(new int[]{10,5,2,6}, 100));
-        System.out.println(numSubarrayProductLessThanK(new int[]{1,2,3}, 0));
+//        System.out.println(numSubarrayProductLessThanK(new int[]{10,5,2,6}, 100));
+//        System.out.println(numSubarrayProductLessThanK(new int[]{1,2,3}, 0));
+
+//        System.out.println(backspaceCompare("cat", "catt#"));
+//        System.out.println(backspaceCompare("ab#c", "ad#c"));
+        System.out.println(backspaceCompare("ab##", "c#d#"));
+//        System.out.println(backspaceCompare("a#c", "b"));
     }
 
     /**
@@ -142,5 +147,44 @@ public class Solution {
                 twos--;
             }
         }
+    }
+
+    /**
+     *  https://leetcode.com/problems/backspace-string-compare/
+     *
+     *  844. Backspace String Compare
+     * */
+    public static boolean backspaceCompare(String s, String t) {
+        int i = s.length() - 1;
+        int j = t.length() - 1;
+        while(i >= 0 || j >= 0) {
+            int indexS = getNextCharIndex(s, i);
+            int indexT = getNextCharIndex(t, j);
+
+            if(indexS < 0 && indexT < 0) return true;
+            else if (indexS < 0 || indexT < 0) return false;
+
+            char sChar = s.charAt(indexS);
+            char tChar = t.charAt(indexT);
+            if(sChar != tChar) return false;
+
+            i = indexS - 1;
+            j = indexT - 1;
+        }
+        return true;
+    }
+    public static int getNextCharIndex(String s, int i) {
+        int numOfHashtags = 0;
+        while(i>= 0) {
+            if(s.charAt(i) == '#') {
+                numOfHashtags++;
+            } else if(numOfHashtags > 0) {
+                numOfHashtags--;
+            } else {
+                break;
+            }
+            i--;
+        }
+        return i;
     }
 }
