@@ -1,5 +1,7 @@
 package org.example.pattern3;
 
+import java.util.List;
+
 /**
  * Pattern 3: Fast & Slow pointers
  *
@@ -92,6 +94,22 @@ public class Solution {
             n = (int) Math.floor(n / 10);
         }
         return result;
+    }
+
+    /**
+     *  https://leetcode.com/problems/middle-of-the-linked-list/
+     *
+     *  876. Middle of the Linked List
+     * */
+    public static ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
     }
 
 }
