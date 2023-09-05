@@ -21,8 +21,18 @@ public class Solution {
 
 //        System.out.println(backspaceCompare("cat", "catt#"));
 //        System.out.println(backspaceCompare("ab#c", "ad#c"));
-        System.out.println(backspaceCompare("ab##", "c#d#"));
+//        System.out.println(backspaceCompare("ab##", "c#d#"));
 //        System.out.println(backspaceCompare("a#c", "b"));
+
+        System.out.println(findLengthOfShortestSubarray(new int[]{
+                1,2,3,10,4,2,3,5
+        }));
+        System.out.println(findLengthOfShortestSubarray(new int[]{
+                5, 4, 3, 2, 1
+        }));
+        System.out.println(findLengthOfShortestSubarray(new int[]{
+                1,2,3
+        }));
     }
 
     /**
@@ -186,5 +196,46 @@ public class Solution {
             i--;
         }
         return i;
+    }
+
+    /**
+     *  https://leetcode.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/
+     *
+     *  1574. Shortest Subarray to be Removed to Make Array Sorted
+     * */
+    public static int findLengthOfShortestSubarray(int[] nums) {
+        int l = nums.length;
+        if(l == 0) return 0;
+
+        int low = 0;
+        int high = l - 1;
+
+        while (low < l - 1 && nums[low] <= nums[low + 1]) {
+            low++;
+        }
+
+        if(low == l) return 0; //sorted array
+
+        while(high > 0 && nums[high] >= nums[high - 1]) {
+            high--;
+        }
+
+
+        int minLength = Math.min (l - low - 1, high);
+        int k = low;
+        low = 0;
+
+        while (low <= k && high < l) {
+            if (nums[low] <= nums[high]) {
+                minLength = Math.min (minLength, high - low - 1);
+                low++;
+            }
+            else {
+                high++;
+            }
+        }
+
+        if(minLength >= 0 ) return minLength;
+        return 0;
     }
 }
