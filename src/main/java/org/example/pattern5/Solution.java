@@ -1,5 +1,8 @@
 package org.example.pattern5;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Solution {
     /**
      *  https://github.com/Chanda-Abdul/Several-Coding-Patterns-for-Solving-Data-Structures-and-Algorithms-Problems-during-Interviews/blob/main/%E2%9C%85%20%20Pattern%2005%3A%20Cyclic%20Sort.md
@@ -8,19 +11,30 @@ public class Solution {
      *
      * */
     public static void main(String[] args) {
-        System.out.println(missingNumber(
+//        System.out.println(missingNumber(
+//                new int[]{
+//                        3, 0, 1
+//                }
+//        ));
+//        System.out.println(missingNumber(
+//                new int[]{
+//                        3, 0, 1, 6, 4, 5
+//                }
+//        ));
+//        System.out.println(missingNumber(
+//                new int[]{
+//                        1
+//                }
+//        ));
+
+//        System.out.println(findDisappearedNumbers(
+//                new int[]{
+//                        2, 3, 1, 8, 2, 3, 5, 1
+//                }
+//        ));
+        System.out.println(findDisappearedNumbers(
                 new int[]{
-                        3, 0, 1
-                }
-        ));
-        System.out.println(missingNumber(
-                new int[]{
-                        3, 0, 1, 6, 4, 5
-                }
-        ));
-        System.out.println(missingNumber(
-                new int[]{
-                        1
+                        4,3,2,7,8,2,3,1
                 }
         ));
     }
@@ -44,5 +58,32 @@ public class Solution {
             }
         }
         return result;
+    }
+
+    /**
+     *  https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/
+     *
+     *  448. Find all numbers disappeared in an Array
+     * */
+    public static List<Integer> findDisappearedNumbers(int[] nums) {
+        ArrayList<Integer> missing = new ArrayList<>();
+
+        for(int i = 0; i < nums.length; i++) {
+            int currNum = nums[i];
+            int swapNum = nums[currNum - 1];
+            if(currNum != i + 1 && currNum != swapNum) {
+                nums[i] = swapNum;
+                nums[currNum - 1] = currNum;
+                i--;
+            }
+        }
+
+        for(int i = 0; i < nums.length; i++) {
+            if(nums[i] != i + 1) {
+                missing.add(i + 1);
+            }
+        }
+
+        return missing;
     }
 }
