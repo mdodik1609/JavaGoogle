@@ -26,21 +26,37 @@ public class Solution {
 //                )
 //        );
 
-        System.out.println(
-                minNumOfRooms(
-                        new int[][]{
-                                {1,4},{2,5},{7,9}
-                        }
-                )
-        );
-        System.out.println(minNumOfRooms(
-                new int[][]{
-                        {1,4}
-                }
-        ));
-        System.out.println(minNumOfRooms(
-                new int[][]{
-                        {4,5},{2,3},{2,4},{3,5}
+//        System.out.println(
+//                minNumOfRooms(
+//                        new int[][]{
+//                                {1,4},{2,5},{7,9}
+//                        }
+//                )
+//        );
+//        System.out.println(minNumOfRooms(
+//                new int[][]{
+//                        {1,4}
+//                }
+//        ));
+//        System.out.println(minNumOfRooms(
+//                new int[][]{
+//                        {4,5},{2,3},{2,4},{3,5}
+//                }
+//        ));
+
+//        System.out.println(findMaxCPULoad(
+//                new int[][] {
+//                        {1,4,3},{2,5,4},{7,9,6}
+//                }
+//        ));
+//        System.out.println(findMaxCPULoad(
+//                new int[][] {
+//                        {6,7,10},{2,4,11},{8,12,15}
+//                }
+//        ));
+        System.out.println(findMaxCPULoad(
+                new int[][] {
+                        {1,4,2},{2,4,1},{3,6,5}
                 }
         ));
     }
@@ -146,6 +162,38 @@ public class Solution {
         }
 
         return result2.size();
+    }
+
+    /**
+     *  https://github.com/mdodik1609/JavaGoogle/commit/edad441152178f51fc5994f209b3ee30bd5b082a
+     *
+     *  Maximum CPU load
+     *
+     *  similar task: Car pooling -> https://leetcode.com/problems/car-pooling/
+     * */
+    public static int findMaxCPULoad(int[][] intervals) {
+        if (intervals.length == 0) return 0;
+
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+
+        ArrayList<int[]> jobs = new ArrayList<>(Arrays.stream(intervals).toList());
+
+        for (int i = 1; i < jobs.size(); i++) {
+            int[] current = jobs.get(i);
+            int[] previous = jobs.get(i - 1);
+            if (current[0] < previous[1]) {
+                jobs.add(i ,new int[]{
+                        previous[0], current[1], current[2] + previous[2]
+                });
+                jobs.remove(i + 1);
+                jobs.remove(i - 1);
+                i--;
+            }
+        }
+
+        return jobs.stream().mapToInt(
+                it -> it[2]
+        ).max().getAsInt();
     }
 
 }
