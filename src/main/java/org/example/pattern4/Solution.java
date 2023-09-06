@@ -16,9 +16,18 @@ public class Solution {
 //        System.out.println(merge(new int[][]{
 //                {1,3},{2,6},{8,10},{15,18}
 //        }));
-        System.out.println(merge(new int[][]{
-                {1,4},{0,4}
-        }));
+//        System.out.println(merge(new int[][]{
+//                {1,4},{0,4}
+//        }));
+
+        System.out.println(
+                insert(
+                        new int[][]{
+                                {1,3}, {6,9}
+                        },
+                        new int[]{2,5}
+                )
+        );
     }
 
     /**
@@ -44,6 +53,24 @@ public class Solution {
 
         return result.toArray(new int[result.size()][]);
     }
+
+    /**
+     *  https://leetcode.com/problems/insert-interval/
+     *
+     *  57. Insert Interval
+     * */
+    public static int[][] insert(int[][] intervals, int[] interval){
+        int length = intervals.length;
+        int[][] result = new int[intervals.length + 1][2];
+
+        for(int i = 0; i < intervals.length; i++) {
+            result[i] = intervals[i];
+        }
+        result[intervals.length] = interval;
+
+        return merge(result);
+    }
+
 }
 
 class Interval{
