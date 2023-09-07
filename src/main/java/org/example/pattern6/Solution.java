@@ -10,7 +10,24 @@ public class Solution {
 
     }
 
+    /**
+     *  https://leetcode.com/problems/reverse-linked-list/
+     *
+     *  206. Reverse Linked list
+     *
+     * */
+    public static ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode current = head;
 
+        while(current != null) {
+            ListNode next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        return prev;
+    }
 
 }
 
