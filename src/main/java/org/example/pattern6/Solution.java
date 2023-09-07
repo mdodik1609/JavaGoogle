@@ -7,7 +7,18 @@ public class Solution {
      *      Pattern 6: In-place reversal of a LinkedList
      * */
     public static void main(String[] args){
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = new ListNode(5);
 
+
+        System.out.println(
+                reverseBetween(
+                        head, 2, 4
+                )
+        );
     }
 
     /**
@@ -27,6 +38,32 @@ public class Solution {
             current = next;
         }
         return prev;
+    }
+
+    /**
+     *  https://leetcode.com/problems/reverse-linked-list-ii/
+     *
+     *  92. Reverse Linked List II
+     * */
+    public static ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode temp = new ListNode(-1);
+        ListNode prev = temp;
+        temp.next = head;
+
+        for (int i = 0; i < left - 1; i++) {
+            prev = prev.next;
+        }
+
+        ListNode cur = prev.next;
+
+        for (int i = 0; i < right - left; i++) {
+            ListNode ptr = prev.next;
+            prev.next = cur.next;
+            cur.next = cur.next.next;
+            prev.next.next = ptr;
+        }
+
+        return temp.next;
     }
 
 }
