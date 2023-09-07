@@ -13,3 +13,16 @@ public class Solution {
 
 
 }
+
+class ListNode{
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int value) {
+        this.val = value;
+    }
+    ListNode(int value, ListNode next) {
+        this.val = value;
+        this.next = next;
+    }
+}
