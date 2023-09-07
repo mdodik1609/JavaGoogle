@@ -14,11 +14,13 @@ public class Solution {
         head.next.next.next.next = new ListNode(5);
 
 
-        System.out.println(
-                reverseBetween(
-                        head, 2, 4
-                )
-        );
+//        System.out.println(
+//                reverseBetween(
+//                        head, 2, 4
+//                )
+//        );
+
+        reverseKGroup(head, 3);
     }
 
     /**
@@ -66,6 +68,48 @@ public class Solution {
         return temp.next;
     }
 
+    /**
+     *  https://leetcode.com/problems/reverse-nodes-in-k-group/
+     *
+     *  25. Reverse Nodes in k-Group
+     * */
+    public static ListNode reverseKGroup(ListNode head, int k) {
+        ListNode prev = null;
+        ListNode current = head;
+
+        mainLoop: while(true) {
+
+            ListNode lastNodeOfPreviousPart = prev;
+            ListNode lastNodeOfSubList = current;
+
+            ListNode next = null;
+            int i = 0;
+
+            while(current != null && i < k) {
+                 next = current.next;
+                 current.next = prev;
+                 prev = current;
+                 current = next;
+                 i++;
+            }
+
+            if(lastNodeOfPreviousPart != null) {
+                lastNodeOfPreviousPart.next = prev;
+            } else {
+                head = prev;
+            }
+
+            lastNodeOfSubList.next = current;
+            prev = lastNodeOfSubList;
+
+            ListNode temp = current;
+            for(int j = 0; j < k; j++) {
+                if(temp == null) break mainLoop;
+                temp = temp.next;
+            }
+        }
+        return head;
+    }
 }
 
 class ListNode{
