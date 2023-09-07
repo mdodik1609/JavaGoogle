@@ -32,11 +32,15 @@ public class Solution {
 //                        2, 3, 1, 8, 2, 3, 5, 1
 //                }
 //        ));
-        System.out.println(findDisappearedNumbers(
-                new int[]{
-                        4,3,2,7,8,2,3,1
-                }
-        ));
+//        System.out.println(findDisappearedNumbers(
+//                new int[]{
+//                        4,3,2,7,8,2,3,1
+//                }
+//        ));
+
+        System.out.println(firstMissingPositive(new int[]{
+                1
+        }));
     }
 
     /**
@@ -85,5 +89,38 @@ public class Solution {
         }
 
         return missing;
+    }
+
+    /**
+     *  https://leetcode.com/problems/first-missing-positive/
+     *
+     *  41. First Missing positive
+     *
+     *
+     *  Given an unsorted integer array nums, return the smallest missing positive integer.
+     *
+     *  You must implement an algorithm that runs in O(n) time and uses O(1) auxiliary space.
+     *
+     * */
+    private static int firstMissingPositive(int[] nums) {
+        int l = nums.length;
+        for(int i = 0; i < l; i++) {
+            int currNum = nums[i];
+            if(currNum <= 0 || currNum > l) continue;
+            int swapNum = nums[currNum - 1];
+            if(currNum != i + 1 && currNum != swapNum) {
+                nums[i] = swapNum;
+                nums[currNum - 1] = currNum;
+                i--;
+            }
+        }
+        // smallest is the first one we find
+        for(int i = 0; i < l; i++) {
+            if(nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+
+        return l + 1;
     }
 }
