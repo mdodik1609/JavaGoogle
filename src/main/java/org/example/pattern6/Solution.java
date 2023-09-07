@@ -20,7 +20,9 @@ public class Solution {
 //                )
 //        );
 
-        reverseKGroup(head, 3);
+        //reverseKGroup(head, 3);
+
+        rotateRight(head, 3);
     }
 
     /**
@@ -109,6 +111,47 @@ public class Solution {
             }
         }
         return head;
+    }
+
+    /**
+     *  https://leetcode.com/problems/rotate-list/
+     *
+     *  61. Rotate list
+     * */
+    public static ListNode rotateRight(ListNode head, int k) {
+        if(head == null) return null;
+        if(head.next == null) return head;
+        ListNode lastNode = head;
+        ListNode newLastNode = null;
+        ListNode current;
+        ListNode afterIterationI = head;
+
+        int size = 0;
+        ListNode tempNode = head;
+        while (tempNode != null) {
+            size++;
+            tempNode = tempNode.next;
+        }
+
+        k = k % size;
+
+
+        for(int i = 0; i < k; i++) {
+            current = lastNode;
+            afterIterationI = current;
+            while(current != null) {
+                if(current.next != null) {
+                    newLastNode = current;
+                    current = current.next;
+                } else {
+                    lastNode = current;
+                    current = null;
+                }
+            }
+            newLastNode.next = null;
+            lastNode.next = afterIterationI;
+        }
+        return lastNode;
     }
 }
 
