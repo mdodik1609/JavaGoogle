@@ -11,14 +11,15 @@ public class Solution {
      *  Pattern 7: Tree Breadth First Search
      * */
     public static void main(String[] args) {
-        TreeNode treeNode = new TreeNode(3);
-        treeNode.left = new TreeNode(9);
-        treeNode.right = new TreeNode(20);
-        treeNode.right.left = new TreeNode(15);
-        treeNode.right.right = new TreeNode(7);
+        TreeNode treeNode = new TreeNode(1);
+        treeNode.left = new TreeNode(2);
+        treeNode.right = new TreeNode(3);
+        treeNode.left.left = new TreeNode(4);
+        treeNode.right.right = new TreeNode(5);
 
 
-        levelOrder(treeNode);
+        //levelOrder(treeNode);
+        zigzagLevelOrder(treeNode);
     }
     /**
      *  https://leetcode.com/problems/binary-tree-level-order-traversal/
@@ -66,6 +67,49 @@ public class Solution {
     private static List<List<Integer>> levelOrderBottom(TreeNode root) {
         List<List<Integer>> result = levelOrder(root);
         Collections.reverse(result);
+        return result;
+    }
+
+    /**
+     *  https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+     *
+     *  103. Binary Tree Zigzag Level Order Traversal
+     * */
+    public static List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        if(root == null) {
+            return Collections.emptyList();
+        }
+        boolean zigzagOrder = false;
+        List<List<Integer>> result = new ArrayList<>();
+
+        ArrayDeque<TreeNode> deque = new ArrayDeque<>();
+
+        deque.push(root);
+
+        while(!deque.isEmpty()) {
+
+            List<TreeNode> listNodes = new ArrayList<>();
+            while(!deque.isEmpty()) {
+                if(zigzagOrder) {
+                    listNodes.add(deque.pollFirst());
+                } else {
+                    listNodes.add(deque.pollLast());
+                }
+
+            }
+
+            result.add(
+                    listNodes.stream().map(it -> it.val).toList()
+            );
+            if(zigzagOrder) Collections.reverse(listNodes);
+
+            for(int i = 0; i < listNodes.size(); i++) {
+                TreeNode current = listNodes.get(i);
+                if(current.left != null) deque.push(current.left);
+                if(current.right != null) deque.push(current.right);
+            }
+            zigzagOrder = !zigzagOrder;
+        }
         return result;
     }
 }
