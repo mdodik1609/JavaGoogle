@@ -112,6 +112,44 @@ public class Solution {
         }
         return result;
     }
+
+    /**
+     *  https://leetcode.com/problems/average-of-levels-in-binary-tree/
+     *
+     *  637. Average of Levels in Binary Tree
+     * */
+    public static  List<Double> averageOfLevels(TreeNode root){
+        ArrayList<Double> result = new ArrayList<>();
+
+        Deque<TreeNode> deque = new ArrayDeque<>();
+        deque.push(root);
+
+        while(!deque.isEmpty()) {
+            int i = 0;
+
+            List<TreeNode> listNodes = new ArrayList<>();
+            while (!deque.isEmpty()) {
+                listNodes.add(deque.pollFirst());
+                i++;
+            }
+
+            long sum = 0;
+            for(int j = 0; j < listNodes.size(); j++) {
+                sum += listNodes.get(j).val;
+            }
+
+            result.add((double) sum / i);
+
+            for(int j = 0; j < listNodes.size(); j++) {
+                TreeNode current = listNodes.get(j);
+                if(current.left != null) deque.push(current.left);
+                if(current.right != null) deque.push(current.right);
+            }
+
+        }
+
+        return result;
+    }
 }
 
 class TreeNode {
