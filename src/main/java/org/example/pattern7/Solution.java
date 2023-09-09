@@ -11,15 +11,24 @@ public class Solution {
      *  Pattern 7: Tree Breadth First Search
      * */
     public static void main(String[] args) {
-        TreeNode treeNode = new TreeNode(1);
-        treeNode.left = new TreeNode(2);
-        treeNode.right = new TreeNode(3);
-        treeNode.left.left = new TreeNode(4);
-        treeNode.right.right = new TreeNode(5);
+//        TreeNode treeNode = new TreeNode(1);
+//        treeNode.left = new TreeNode(2);
+//        treeNode.right = new TreeNode(3);
+//        treeNode.left.left = new TreeNode(4);
+//        treeNode.right.right = new TreeNode(5);
+//
+//
+//        //levelOrder(treeNode);
+//        zigzagLevelOrder(treeNode);
 
-
-        //levelOrder(treeNode);
-        zigzagLevelOrder(treeNode);
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+        connect(root);
     }
     /**
      *  https://leetcode.com/problems/binary-tree-level-order-traversal/
@@ -149,6 +158,32 @@ public class Solution {
         }
 
         return result;
+    }
+
+    /**
+     *  https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+     *
+     *  116. Populating Next Right Pointers in Each Node
+     *
+     * */
+    public static Node connect (Node root) {
+        if(root == null) return null;
+        Deque<Node> deque = new ArrayDeque<>();
+        deque.push(root);
+        while(!deque.isEmpty()) {
+
+            List<Node> listNodes = new ArrayList<>();
+            while (!deque.isEmpty()) {
+                listNodes.add(deque.pollLast());
+                listNodes.get(listNodes.size() - 1).next = deque.peekLast();
+            }
+
+            for(Node node : listNodes) {
+                if(node.left != null) deque.push(node.left);
+                if(node.right != null) deque.push(node.right);
+            }
+        }
+        return root;
     }
 }
 
