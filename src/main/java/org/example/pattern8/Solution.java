@@ -119,6 +119,25 @@ public class Solution {
         currentPath.remove(currentPath.size() - 1);
         return result;
     }
+
+    /**
+     *  https://leetcode.com/problems/diameter-of-binary-tree/
+     *
+     *  543. Diameter of Binary Tree
+     * */
+    public int diameterOfBinaryTree(TreeNode root) {
+        int[] result = new int[1];
+        diameterRecursive(root, result);
+        return result[0];
+    }
+
+    public static int diameterRecursive(TreeNode node, int[] result) {
+        if(node == null) return 0;
+        int leftHeight = diameterRecursive(node.left, result);
+        int rightHeight = diameterRecursive(node.right, result);
+        result[0] = Math.max(result[0], leftHeight + rightHeight);
+        return 1 + Math.max(leftHeight, rightHeight);
+    }
 }
 
 class TreeNode {
