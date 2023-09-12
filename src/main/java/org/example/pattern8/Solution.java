@@ -11,17 +11,25 @@ public class Solution {
      * Pattern 8: Tree Depth First Search (DFS)
      * */
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(5);
-        root.left = new TreeNode(4);
-        root.right = new TreeNode(8);
-        root.left.left = new TreeNode(11);
-        root.left.left.left = new TreeNode(7);
-        root.left.left.right = new TreeNode(2);
-        root.right.left = new TreeNode(13);
-        root.right.right = new TreeNode(4);
-        root.right.right.left = new TreeNode(5);
-        root.right.right.right = new TreeNode(1);
-        pathSum(root, 22);
+//        TreeNode root = new TreeNode(5);
+//        root.left = new TreeNode(4);
+//        root.right = new TreeNode(8);
+//        root.left.left = new TreeNode(11);
+//        root.left.left.left = new TreeNode(7);
+//        root.left.left.right = new TreeNode(2);
+//        root.right.left = new TreeNode(13);
+//        root.right.right = new TreeNode(4);
+//        root.right.right.left = new TreeNode(5);
+//        root.right.right.right = new TreeNode(1);
+//        pathSum(root, 22);
+
+
+        TreeNode root = new TreeNode(4);
+        root.left = new TreeNode(9);
+        root.right = new TreeNode(0);
+        root.left.left = new TreeNode(5);
+        root.left.right = new TreeNode(1);
+        System.out.println(sumNumbers(root));
     }
     /**
      *  https://leetcode.com/problems/path-sum/
@@ -65,6 +73,24 @@ public class Solution {
         }
         currentPath.remove(currentPath.size() - 1);
         return allPaths;
+    }
+
+    /**
+     *  https://leetcode.com/problems/sum-root-to-leaf-numbers/
+     *
+     *  129. Sum Root to Leaf Numbers
+     * */
+    public static int sumNumbers(TreeNode root) {
+        return findAllPathsSum(root, 0);
+    }
+
+    public static int findAllPathsSum(TreeNode currentNode, int result) {
+        if(currentNode == null) return 0;
+        result = 10 * result + currentNode.val;
+        if(isLeaf(currentNode)) {
+            return result;
+        }
+        return findAllPathsSum(currentNode.left, result) + findAllPathsSum(currentNode.right, result);
     }
 }
 
