@@ -92,6 +92,33 @@ public class Solution {
         }
         return findAllPathsSum(currentNode.left, result) + findAllPathsSum(currentNode.right, result);
     }
+
+    /**
+     *  https://leetcode.com/problems/path-sum-iii/
+     *
+     *  437. Path Sum III
+     * */
+    public static int pathSumIII(TreeNode root, int targetSum) {
+        return countPathSum(root, targetSum, new ArrayList<Integer>());
+    }
+
+    public static int countPathSum(TreeNode node, int targetSum, List<Integer> currentPath) {
+        if(node == null) return 0;
+        currentPath.add(node.val);
+        int result = 0;
+        int tempSum = 0;
+        for(int i = currentPath.size() - 1; i >= 0; i--) {
+            tempSum += currentPath.get(i);
+            if(tempSum == targetSum) result++;
+        }
+
+        if(!isLeaf(node)) {
+            result += countPathSum(node.left, targetSum, currentPath) + countPathSum(node.right, targetSum, currentPath);
+        }
+
+        currentPath.remove(currentPath.size() - 1);
+        return result;
+    }
 }
 
 class TreeNode {
