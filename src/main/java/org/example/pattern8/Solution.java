@@ -3,6 +3,7 @@ package org.example.pattern8;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Solution {
     /**
@@ -36,6 +37,10 @@ public class Solution {
         root.right.left = new TreeNode(15);
         root.right.right = new TreeNode(7);
         System.out.println(maxPathSum(root));
+
+        TreeNode root2 = new TreeNode(2);
+        root2.left = new TreeNode(-1);
+        System.out.println(maxPathSum(root2));
     }
     /**
      *  https://leetcode.com/problems/path-sum/
@@ -159,8 +164,8 @@ public class Solution {
     public static int maxPathSumRecursive(TreeNode node) {
         if(node == null) return 0;
 
-        int leftMax = maxPathSumRecursive(node.left);
-        int rightMax = maxPathSumRecursive(node.right);
+        int leftMax = Math.max(maxPathSumRecursive(node.left), 0);
+        int rightMax = Math.max(maxPathSumRecursive(node.right), 0);
 
         int currentMax = leftMax + rightMax + node.val;
         maxSumPath = Math.max(maxSumPath, currentMax);
