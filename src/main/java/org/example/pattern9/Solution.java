@@ -1,5 +1,6 @@
 package org.example.pattern9;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Stack;
@@ -18,9 +19,15 @@ public class Solution {
 //        finder.addNum(3);
 //        System.out.println(finder.findMedian());
 
-        System.out.println(medianSlidingWindow(
-                new int[]{1,3,-1,-3,5,3,6,7}, 3
-        ));
+//        System.out.println(medianSlidingWindow(
+//                new int[]{1,3,-1,-3,5,3,6,7}, 3
+//        ));
+
+        System.out.println(
+                findMaximizedCapital(
+                        2,0, new int[]{1,2,3}, new int[]{0,1,1}
+                )
+        );
     }
 
     /**
@@ -43,6 +50,35 @@ public class Solution {
             medianFinder.removeNumber(nums[i - k + 1]);
         }
         return result;
+    }
+
+    /**
+     * https://leetcode.com/problems/ipo/
+     *
+     * 502. IPO
+     * */
+    public static int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        int n = profits.length;
+        int[][] projects = new int[n][2];
+        PriorityQueue<Integer> maxCapital = new PriorityQueue<>(Collections.reverseOrder());
+
+        for(int i = 0; i < n; i++) {
+            projects[i][0] = capital[i];
+            projects[i][1] = profits[i];
+        }
+        Arrays.sort(projects, (a,b) -> Integer.compare(a[0], b[0]));
+        int cnt = 0;
+        while(k > 0) {
+            while(cnt < n && projects[cnt][0] <= w) {
+                maxCapital.add(projects[cnt][1]);
+                cnt++;
+            }
+            if(maxCapital.isEmpty()) break;
+            w += maxCapital.poll();
+            k--;
+        }
+
+        return w;
     }
 }
 
