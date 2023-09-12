@@ -24,12 +24,18 @@ public class Solution {
 //        pathSum(root, 22);
 
 
-        TreeNode root = new TreeNode(4);
+//        TreeNode root = new TreeNode(4);
+//        root.left = new TreeNode(9);
+//        root.right = new TreeNode(0);
+//        root.left.left = new TreeNode(5);
+//        root.left.right = new TreeNode(1);
+//        System.out.println(sumNumbers(root));
+        TreeNode root = new TreeNode(-10);
         root.left = new TreeNode(9);
-        root.right = new TreeNode(0);
-        root.left.left = new TreeNode(5);
-        root.left.right = new TreeNode(1);
-        System.out.println(sumNumbers(root));
+        root.right = new TreeNode(20);
+        root.right.left = new TreeNode(15);
+        root.right.right = new TreeNode(7);
+        System.out.println(maxPathSum(root));
     }
     /**
      *  https://leetcode.com/problems/path-sum/
@@ -137,6 +143,29 @@ public class Solution {
         int rightHeight = diameterRecursive(node.right, result);
         result[0] = Math.max(result[0], leftHeight + rightHeight);
         return 1 + Math.max(leftHeight, rightHeight);
+    }
+
+    /**
+     *  https://leetcode.com/problems/binary-tree-maximum-path-sum/
+     *
+     *  124. Binary Tree Maximum Path Sum
+     * */
+    public static int maxSumPath;
+    public static int maxPathSum(TreeNode root) {
+        maxSumPath = Integer.MIN_VALUE;
+        maxPathSumRecursive(root);
+        return maxSumPath;
+    }
+    public static int maxPathSumRecursive(TreeNode node) {
+        if(node == null) return 0;
+
+        int leftMax = maxPathSumRecursive(node.left);
+        int rightMax = maxPathSumRecursive(node.right);
+
+        int currentMax = leftMax + rightMax + node.val;
+        maxSumPath = Math.max(maxSumPath, currentMax);
+
+        return Math.max(leftMax, rightMax) + node.val;
     }
 }
 
