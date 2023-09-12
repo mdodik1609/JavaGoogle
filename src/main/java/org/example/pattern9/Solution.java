@@ -18,12 +18,14 @@ public class Solution {
         finder.addNum(3);
         System.out.println(finder.findMedian());
     }
-    /**
-     *  https://leetcode.com/problems/find-median-from-data-stream/
-     *
-     *  295. Find Median from Data Stream
-     * */
+
 }
+
+/**
+ *  https://leetcode.com/problems/find-median-from-data-stream/
+ *
+ *  295. Find Median from Data Stream
+ * */
 class MedianFinder {
 
     PriorityQueue<Integer> maxStack = new PriorityQueue<>();
