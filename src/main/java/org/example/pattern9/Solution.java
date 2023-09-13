@@ -23,9 +23,17 @@ public class Solution {
 //                new int[]{1,3,-1,-3,5,3,6,7}, 3
 //        ));
 
+//        System.out.println(
+//                findMaximizedCapital(
+//                        2,0, new int[]{1,2,3}, new int[]{0,1,1}
+//                )
+//        );
+
         System.out.println(
-                findMaximizedCapital(
-                        2,0, new int[]{1,2,3}, new int[]{0,1,1}
+                findRightInterval(
+                        new int[][] {
+                                {3,4},{2,3},{1,2}
+                        }
                 )
         );
     }
@@ -79,6 +87,34 @@ public class Solution {
         }
 
         return w;
+    }
+
+    /**
+     *  https://leetcode.com/problems/find-right-interval/
+     *
+     *  436. Find Right Interval
+     * */
+    public static int[] findRightInterval(int[][] intervals) {
+        int[] result = new int[intervals.length];
+        Arrays.fill(result, -1);
+        PriorityQueue<int[]> maxStartHeap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        PriorityQueue<int[]> maxEndHeap = new PriorityQueue<>((a,b) -> a[0] - b[0]);
+        for (int i = 0; i < intervals.length; i++) {
+            maxStartHeap.add(new int[]{intervals[i][0], i});
+            maxEndHeap.add(new int[]{intervals[i][1], i});
+        }
+
+        while (!maxEndHeap.isEmpty()) {
+            int [] currentEnd = maxEndHeap.poll();
+            while (!maxStartHeap.isEmpty() && currentEnd[0] > maxStartHeap.peek()[0]) {
+                maxStartHeap.poll();
+            }
+            if (maxStartHeap.isEmpty()) {
+                return result;
+            }
+            result[currentEnd[1]] = maxStartHeap.peek()[1];
+        }
+        return result;
     }
 }
 
