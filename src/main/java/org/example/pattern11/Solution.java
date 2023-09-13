@@ -37,4 +37,27 @@ public class Solution {
         }
         return -1;
     }
+    /***
+     *  https://github.com/Chanda-Abdul/Several-Coding-Patterns-for-Solving-Data-Structures-and-Algorithms-Problems-during-Interviews/blob/main/%E2%9C%85%20%20Pattern%2011%3A%20Modified%20Binary%20Search.md#ceiling-of-a-number-medium
+     *
+     *  Ceiling of a Number
+     */
+    public static int searchCeilingOfNumber(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length - 1;
+
+        if(nums[end] > target) return -1;
+
+        while(start <= end) {
+            int mid = (int) Math.floor(start + (end - start) / 2);
+            if (nums[mid] > target) {
+                end = mid - 1;
+            } else if (nums[mid] < target) {
+                start = mid + 1;
+            } else {
+                return mid;
+            }
+        }
+        return start;
+    }
 }
