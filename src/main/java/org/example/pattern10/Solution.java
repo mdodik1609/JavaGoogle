@@ -9,9 +9,14 @@ public class Solution {
      *  Pattern 10: Subset
      * */
     public static void main(String[] args) {
+//        System.out.println(
+//                subsets(
+//                        new int[]{1,2}
+//                )
+//        );
         System.out.println(
-                subsets(
-                        new int[]{1,2}
+                permute(
+                        new int[]{1,2,3}
                 )
         );
     }
@@ -73,5 +78,28 @@ public class Solution {
             result = tempResult;
         }
         return new ArrayList<>(result);
+    }
+
+    /**
+     *  https://leetcode.com/problems/permutations/
+     *
+     *  46. Permutations
+     * */
+    public static List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        permuteRecursive(new ArrayList<>(), nums, list);
+        return list;
+    }
+    public static void permuteRecursive(List<Integer> temp, int[] nums, List<List<Integer>> subsets) {
+        if(temp.size() == nums.length){
+            subsets.add(new ArrayList<>(temp));
+        } else{
+            for(int i = 0; i < nums.length; i++){
+                if(temp.contains(nums[i])) continue;
+                temp.add(nums[i]);
+                permuteRecursive(temp, nums, subsets);
+                temp.remove(temp.size() - 1);
+            }
+        }
     }
 }
