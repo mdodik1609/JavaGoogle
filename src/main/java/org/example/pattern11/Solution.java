@@ -8,9 +8,14 @@ public class Solution {
      *
      * */
     public static void main(String[] args) {
+//        System.out.println(
+//                search(
+//                        new int[]{-1,0,3,5,7,9,12}, 9
+//                )
+//        );
         System.out.println(
-                search(
-                        new int[]{-1,0,3,5,7,9,12}, 9
+                searchInsert(
+                        new int[]{1,3,5,6}, 7
                 )
         );
     }
@@ -59,5 +64,25 @@ public class Solution {
             }
         }
         return start;
+    }
+    /**
+     *  https://leetcode.com/problems/search-insert-position/
+     *
+     *  35. Search Insert Position
+     * */
+    public static int searchInsert(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length - 1;
+        while(start <= end) {
+            int mid = (int) Math.floor( start + (end - start) / 2);
+            if(nums[mid] < target) {
+                start = mid + 1;
+            } else if(nums[mid] > target) {
+                end = mid - 1;
+            } else {
+                return mid;
+            }
+        }
+        return end + 1;
     }
 }
