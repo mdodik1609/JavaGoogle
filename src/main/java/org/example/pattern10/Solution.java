@@ -32,8 +32,11 @@ public class Solution {
 //                        "2-1-1"
 //                )
 //        );
+//        System.out.println(
+//                numTrees(3)
+//        );
         System.out.println(
-                numTrees(3)
+                generateTrees(3)
         );
 
     }
@@ -218,4 +221,54 @@ public class Solution {
         }
         return total;
     }
+    /**
+     *  https://leetcode.com/problems/unique-binary-search-trees-ii/
+     *
+     *  95. Unique Binary Search Trees II
+     * */
+    public static List<TreeNode> generateTrees(int n) {
+        List<TreeNode> result = new ArrayList<>();
+        result = generateTreesRecursive(1, n);
+        return result;
+    }
+
+    public static List<TreeNode> generateTreesRecursive(int start, int end) {
+        List<TreeNode> result = new ArrayList<>();
+        if(start > end) {
+            result.add(null);
+            return result;
+        }
+        for(int i = start; i <= end; i++) {
+            List<TreeNode> leftSide = generateTreesRecursive(start, i -1);
+            List<TreeNode> rightSide = generateTreesRecursive(i + 1, end);
+
+            for(int j = 0; j < leftSide.size(); j++) {
+                for(int k = 0; k < rightSide.size(); k++) {
+                    TreeNode node = new TreeNode(i, leftSide.get(j), rightSide.get(k));
+                    result.add(node);
+                }
+            }
+        }
+        return result;
+    }
 }
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {
+    }
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
