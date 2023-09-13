@@ -19,10 +19,13 @@ public class Solution {
 //                        new int[]{1,2,3}
 //                )
 //        );
+//        System.out.println(
+//                letterCasePermutation(
+//                        "a1bCd"
+//                )
+//        );
         System.out.println(
-                letterCasePermutation(
-                        "a1bCd"
-                )
+                generateParenthesis(3)
         );
     }
     /**
@@ -132,5 +135,30 @@ public class Solution {
             }
         }
         return result;
+    }
+    /**
+     *  https://leetcode.com/problems/generate-parentheses/
+     *
+     *  22. Generate Parentheses
+     * */
+    public static List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        generateParenthesisRecursive(n, 0, 0, "", result);
+        return result;
+    }
+    public static void generateParenthesisRecursive(int num, int open, int close, String currentString, List<String> result) {
+        if(open == close && close == num) {
+            result.add(currentString);
+            return;
+        }
+        if(open < num) {
+            currentString = currentString.concat("(");
+            generateParenthesisRecursive(num, open + 1, close, currentString, result);
+            currentString = currentString.substring(0, currentString.length() - 1);
+        }
+        if(open > close) {
+            currentString = currentString.concat(")");
+            generateParenthesisRecursive(num, open, close + 1, currentString, result);
+        }
     }
 }
