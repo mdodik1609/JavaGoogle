@@ -24,9 +24,15 @@ public class Solution {
 //                        "a1bCd"
 //                )
 //        );
+//        System.out.println(
+//                generateParenthesis(3)
+//        );
         System.out.println(
-                generateParenthesis(3)
+                diffWaysToCompute(
+                        "2-1-1"
+                )
         );
+
     }
     /**
      *  https://leetcode.com/problems/subsets/
@@ -160,5 +166,36 @@ public class Solution {
             currentString = currentString.concat(")");
             generateParenthesisRecursive(num, open, close + 1, currentString, result);
         }
+    }
+    /**
+     *  https://leetcode.com/problems/different-ways-to-add-parentheses/
+     *
+     *  241. Different Ways to Add Parentheses
+     * */
+    public static List<Integer> diffWaysToCompute(String expression) {
+        List<Integer> result = new ArrayList<>();
+        if(!expression.contains("+") && !expression.contains("*") && !expression.contains("-")) {
+            result.add(Integer.parseInt(expression));
+            return result;
+        }
+        for(int i = 0; i < expression.length(); i++) {
+            char currentChar = expression.charAt(i);
+            if(!Character.isDigit(currentChar)) {
+                List<Integer> leftPart = diffWaysToCompute(expression.substring(0, i));
+                List<Integer> rightPart = diffWaysToCompute(expression.substring(i + 1, expression.length()));
+                for(int j = 0; j < leftPart.size(); j++) {
+                    for(int k = 0; k < rightPart.size(); k++) {
+                        if(currentChar == '+') {
+                            result.add(leftPart.get(j) + rightPart.get(k));
+                        } else if(currentChar == '-') {
+                            result.add(leftPart.get(j) - rightPart.get(k));
+                        } else if(currentChar == '*') {
+                            result.add(leftPart.get(j) * rightPart.get(k));
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
