@@ -43,4 +43,35 @@ public class Solution {
         }
         return new ArrayList<>(result);
     }
+
+    /**
+     *  https://leetcode.com/problems/subsets-ii/description/
+     *
+     *  90. Subsets II
+     * */
+    public static List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        result.add(new ArrayList<>());
+
+        for(int i = 0; i < nums.length; i++) {
+            int currentNum = nums[i];
+            int currentLen = result.size();
+            ArrayList<ArrayList<Integer>> tempResult = new ArrayList<>();
+
+            for(int j = 0; j < currentLen; j++) {
+                tempResult.add(new ArrayList<>(result.get(j)));
+            }
+
+            for(int j = 0; j < currentLen; j++) {
+                ArrayList<Integer> tempList = result.get(j);
+                if(tempList.contains(currentNum)) { continue; }
+                tempList.add(currentNum);
+                if(tempResult.contains(tempList)) { continue; }
+                tempResult.add(tempList);
+            }
+            result = tempResult;
+        }
+        return new ArrayList<>(result);
+    }
 }
