@@ -27,10 +27,13 @@ public class Solution {
 //        System.out.println(
 //                generateParenthesis(3)
 //        );
+//        System.out.println(
+//                diffWaysToCompute(
+//                        "2-1-1"
+//                )
+//        );
         System.out.println(
-                diffWaysToCompute(
-                        "2-1-1"
-                )
+                numTrees(3)
         );
 
     }
@@ -197,5 +200,22 @@ public class Solution {
             }
         }
         return result;
+    }
+
+    /**
+     *  https://leetcode.com/problems/unique-binary-search-trees/
+     *
+     *  96. Unique Binary Search Trees
+     * */
+    public static int numTrees(int n) {
+        return numTree(1, n);
+    }
+    public static int numTree(int start, int end) {
+        if(start >= end) return 1;
+        int total = 0;
+        for(int i = start; i <= end; i++) {
+            total += numTree(i + 1, end) * numTree(start, i - 1);
+        }
+        return total;
     }
 }
