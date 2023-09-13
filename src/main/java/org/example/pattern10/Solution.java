@@ -14,9 +14,14 @@ public class Solution {
 //                        new int[]{1,2}
 //                )
 //        );
+//        System.out.println(
+//                permute(
+//                        new int[]{1,2,3}
+//                )
+//        );
         System.out.println(
-                permute(
-                        new int[]{1,2,3}
+                letterCasePermutation(
+                        "a1bCd"
                 )
         );
     }
@@ -101,5 +106,31 @@ public class Solution {
                 temp.remove(temp.size() - 1);
             }
         }
+    }
+
+    /**
+     *  https://leetcode.com/problems/letter-case-permutation/
+     *
+     *  784. Letter Case Permutation
+     * */
+    public static List<String> letterCasePermutation(String s) {
+        List<String> result = new ArrayList<>();
+        result.add(s);
+        for(int i = 0; i < s.length(); i++) {
+            char currentChar = s.charAt(i);
+            if(Character.isDigit(currentChar)) continue;
+
+            int n = result.size();
+            for(int j = 0; j < n; j++) {
+                String[] chars = result.get(j).split("");
+                if(chars[i] == chars[i].toLowerCase()) {
+                    chars[i] = chars[i].toUpperCase();
+                } else {
+                    chars[i] = chars[i].toLowerCase();
+                }
+                result.add(String.join("", chars));
+            }
+        }
+        return result;
     }
 }
