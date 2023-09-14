@@ -65,4 +65,22 @@ public class Solution {
         }
         return n ^ (int) Math.pow(2, bitCount) - 1;
     }
+
+    /**
+     * https://leetcode.com/problems/flipping-an-image/
+     *
+     *  832. Flipping an Image
+     * */
+    public int[][] flipAndInvertImage(int[][] image) {
+        int n = image.length;
+
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < Math.floor((n + 1)/ 2);j++){
+                int temp = image[i][j];
+                image[i][j] = image[i][n - j - 1] ^ 1;
+                image[i][n - j - 1] = temp ^ 1;
+            }
+        }
+        return image;
+    }
 }
