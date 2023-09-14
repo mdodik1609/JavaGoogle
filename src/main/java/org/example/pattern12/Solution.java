@@ -7,7 +7,9 @@ public class Solution {
      *  Pattern 12: Bitwise XOR
      * */
     public static void main(String[] args) {
-
+        System.out.println(
+               bitwiseComplement(10)
+        );
     }
     /**
      * https://leetcode.com/problems/single-number/
@@ -47,4 +49,20 @@ public class Solution {
         return new int[]{xor1, xor2};
     }
 
+    /**
+     *  https://leetcode.com/problems/complement-of-base-10-integer/
+     *
+     *  1009. Complement of base 10 integer
+     * */
+    public static int bitwiseComplement(int n) {
+        if(n == 0) return 1;
+        int bitCount = 0;
+        int temp = n;
+
+        while(temp > 0) {
+            bitCount++;
+            temp = temp >> 1;
+        }
+        return n ^ (int) Math.pow(2, bitCount) - 1;
+    }
 }
