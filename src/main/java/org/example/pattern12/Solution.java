@@ -21,5 +21,30 @@ public class Solution {
         }
         return result;
     }
+    /**
+     * https://leetcode.com/problems/single-number-iii/
+     *
+     *  260. Single Number III
+     * */
+    public static int[] singleNumberII(int[] nums) {
+        int xor = 0;
+        for(int i = 0; i < nums.length; i ++) {
+            xor = xor ^ nums[i];
+        }
+
+        int rightBit = xor & (-xor);
+
+        int xor1 = 0;
+        int xor2 = 0;
+
+        for(int i = 0; i < nums.length; i++) {
+            if ((nums[i] & rightBit) == 0) {
+                xor1 ^= nums[i];
+            } else {
+                xor2 ^= nums[i];
+            }
+        }
+        return new int[]{xor1, xor2};
+    }
 
 }
