@@ -32,4 +32,23 @@ public class Solution {
         }
         return minHeap.peek();
     }
+    /**
+     *  https://leetcode.com/problems/k-closest-points-to-origin/
+     *
+     *  973. K closest points to origin
+     * */
+    public static int[][] kClosest(int[][] points, int k){
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a,b)->a[1]-b[1]);
+        for(int i = 0; i < points.length; i++){
+            int sum = points[i][0] * points[i][0] + points[i][1] * points[i][1];
+            minHeap.add(new int[] {i,sum});
+        }
+
+        int[][] res = new int[k][];
+        while(k > 0){
+            res[k-1] = points[minHeap.poll()[0]];
+            k--;
+        }
+        return res;
+    }
 }
