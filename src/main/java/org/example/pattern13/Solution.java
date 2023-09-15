@@ -1,5 +1,6 @@
 package org.example.pattern13;
 
+import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class Solution {
@@ -50,5 +51,31 @@ public class Solution {
             k--;
         }
         return res;
+    }
+    /**
+     *  https://leetcode.com/problems/top-k-frequent-elements/
+     *
+     *  347. Top K frequent elements
+     * */
+    public static int[] topKFrequent(int[] nums, int k) {
+
+        HashMap<Integer, Integer> countMap = new HashMap<>();
+        for(int i : nums){
+            countMap.put(i, countMap.getOrDefault(i, 0)+1);
+        }
+
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(
+                k, (a,b) -> countMap.get(b) - countMap.get(a)
+        );
+
+        int[] result = new int[k];
+
+        for(int i : countMap.keySet()) {
+            maxHeap.add(i);
+        }
+        for(int i = 0; i < k; i++) {
+            result[i] = maxHeap.poll();
+        }
+        return result;
     }
 }
