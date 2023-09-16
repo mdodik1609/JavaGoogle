@@ -10,9 +10,13 @@ public class Solution {
      *  Pattern 13: Top 'K' Elements
      * */
     public static void main(String[] args) {
-        System.out.println(findKthLargest(
-                new int[]{2,1,3,4,7,5,8,9,6}, 5
-        ));
+//        System.out.println(findKthLargest(
+//                new int[]{2,1,3,4,7,5,8,9,6}, 5
+//        ));
+
+        System.out.println(
+                frequencySort("dinamooo")
+        );
     }
     /**
      *  https://leetcode.com/problems/kth-largest-element-in-an-array/
@@ -77,5 +81,34 @@ public class Solution {
             result[i] = maxHeap.poll();
         }
         return result;
+    }
+    /**
+     *  https://leetcode.com/problems/sort-characters-by-frequency/
+     *
+     *  451. Sort characters by frequency
+     * */
+    public static String frequencySort(String s) {
+        HashMap<Character, Integer> frequencyCharMap = new HashMap<>();
+        for(int i = 0; i < s.length(); i++){
+            frequencyCharMap.put(s.charAt(i), frequencyCharMap.getOrDefault(s.charAt(i), 0) + 1);
+        }
+
+        PriorityQueue<Character> maxHeap = new PriorityQueue<Character>(
+                (a,b) -> frequencyCharMap.get(b) - frequencyCharMap.get(a)
+        );
+
+        for(Character i : frequencyCharMap.keySet()) {
+            maxHeap.add(i);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < frequencyCharMap.size(); i++) {
+            char c = maxHeap.poll();
+            int fChar = frequencyCharMap.get(c);
+            for(int j = 0; j < fChar; j++) {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }
