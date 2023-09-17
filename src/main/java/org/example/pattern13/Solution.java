@@ -14,8 +14,13 @@ public class Solution {
 //                new int[]{2,1,3,4,7,5,8,9,6}, 5
 //        ));
 
+//        System.out.println(
+//                frequencySort("dinamooo")
+//        );
+
         System.out.println(
-                frequencySort("dinamooo")
+                findLeastNumOfUniqueInts(
+                        new int[] {2,1,1,3,3,3}, 3)
         );
     }
     /**
@@ -110,5 +115,35 @@ public class Solution {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/
+     *
+     *  1481. Least Number of Unique Integers after K Removals
+     * */
+    public static int findLeastNumOfUniqueInts(int[] arr, int k) {
+        HashMap<Integer, Integer> freqMap = new HashMap<>();
+        for(int i = 0; i < arr.length; i++) {
+            freqMap.put(arr[i], freqMap.getOrDefault(arr[i], 0) + 1);
+        }
+
+        PriorityQueue<Integer> pq = new  PriorityQueue<Integer>(
+                (a,b) -> freqMap.get(a) - freqMap.get(b)
+        );
+
+        for(int i : freqMap.keySet()) {
+            pq.add(i);
+        }
+
+        for(int i = 0; i < k; i++ ) {
+            int tempNum = pq.poll();
+
+            freqMap.replace(tempNum, freqMap.get(tempNum) - 1);
+            if(freqMap.get(tempNum) == 0) freqMap.remove(tempNum);
+            else pq.add(tempNum);
+        }
+
+        return freqMap.size();
     }
 }
