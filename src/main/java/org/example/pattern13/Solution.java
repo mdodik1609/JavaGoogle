@@ -18,9 +18,14 @@ public class Solution {
 //                frequencySort("dinamooo")
 //        );
 
+//        System.out.println(
+//                findLeastNumOfUniqueInts(
+//                        new int[] {2,1,1,3,3,3}, 3)
+//        );
         System.out.println(
-                findLeastNumOfUniqueInts(
-                        new int[] {2,1,1,3,3,3}, 3)
+                reorganizeString(
+                        "ababb"
+                )
         );
     }
     /**
@@ -145,5 +150,45 @@ public class Solution {
         }
 
         return freqMap.size();
+    }
+
+    /**
+     *  https://leetcode.com/problems/reorganize-string/
+     *
+     *  767. Reorganize String
+     * */
+    public static String reorganizeString(String s) {
+        HashMap<Character, Integer> freqMap = new HashMap<>();
+        for(int i = 0; i < s.length(); i++) {
+            freqMap.put(s.charAt(i), freqMap.getOrDefault(s.charAt(i), 0) + 1);
+        }
+
+        PriorityQueue<Character> pq = new  PriorityQueue<Character>(
+                (a,b) -> freqMap.get(b) - freqMap.get(a)
+        );
+
+        for(Character c : freqMap.keySet()) {
+            pq.add(c);
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < s.length(); i++ ) {
+            if(i - 1 < 0 || sb.charAt(i - 1) != pq.peek()) {
+                Character tempChar1 = pq.poll();
+                sb = sb.append(tempChar1);
+                freqMap.replace(tempChar1, freqMap.get(tempChar1) - 1);
+                if(freqMap.get(tempChar1) == 0) freqMap.remove(tempChar1);
+                else pq.add(tempChar1);
+                continue;
+            }
+            if(pq.size() < 2) return "";
+            Character tempChar1 = pq.poll();
+            Character tempChar2 = pq.poll();
+            sb = sb.append(tempChar2);
+            freqMap.replace(tempChar2, freqMap.get(tempChar2) - 1);
+            if(freqMap.get(tempChar2) == 0) freqMap.remove(tempChar2);
+            else pq.add(tempChar2);
+            pq.add(tempChar1);
+        }
+        return sb.toString();
     }
 }
