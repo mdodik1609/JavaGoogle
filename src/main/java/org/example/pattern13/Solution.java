@@ -1,5 +1,6 @@
 package org.example.pattern13;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
@@ -22,11 +23,22 @@ public class Solution {
 //                findLeastNumOfUniqueInts(
 //                        new int[] {2,1,1,3,3,3}, 3)
 //        );
-        System.out.println(
-                reorganizeString(
-                        "ababb"
-                )
-        );
+//        System.out.println(
+//                reorganizeString(
+//                        "ababb"
+//                )
+//        );
+        FreqStack stack = new FreqStack();
+        stack.push(5);
+        stack.push(7);
+        stack.push(5);
+        stack.push(7);
+        stack.push(4);
+        stack.push(5);
+        stack.pop();
+        stack.pop();
+        stack.pop();
+        stack.pop();
     }
     /**
      *  https://leetcode.com/problems/kth-largest-element-in-an-array/
@@ -190,5 +202,63 @@ public class Solution {
             pq.add(tempChar1);
         }
         return sb.toString();
+    }
+}
+
+/**
+ *  https://leetcode.com/problems/maximum-frequency-stack/
+ *
+ *  895. Maximum Frequency Stack
+ * */
+class FreqStack {
+    HashMap<Integer, Integer> freqMap;
+    ArrayList<Integer> stack;
+    PriorityQueue<Integer> pq;
+
+    public FreqStack() {
+        freqMap = new HashMap<Integer, Integer>();
+        stack = new ArrayList<Integer>();
+        pq = new PriorityQueue(
+                (a,b) -> freqMap.get(b) - freqMap.get(a) // Collections.reverseOrder();
+        );
+    }
+
+    public void push(int val) {
+        stack.add(val);
+        if(freqMap.containsKey(val)) freqMap.replace(val, freqMap.get(val) + 1);
+        else freqMap.put(val, 1);
+        if(pq.contains(val)) pq.remove(val);
+        pq.add(val);
+    }
+
+    public int pop() {
+        int result = -1;
+        ArrayList<Integer> allResults = new ArrayList();
+        allResults.add(pq.poll());
+        while(freqMap.get(allResults.get(0)) == freqMap.get(pq.peek()) ) {
+            allResults.add(pq.poll());
+        }
+
+        for(int i = stack.size() - 1; i >= 0; i--) {
+            if(!allResults.contains(stack.get(i))) continue;
+
+            freqMap.replace(stack.get(i), freqMap.get(stack.get(i)) - 1);
+            pq.remove(stack.get(i));
+            if(freqMap.get(stack.get(i)) == 0) {
+                freqMap.remove(stack.get(i));
+            } else {
+                pq.add(stack.get(i));
+            }
+            for(int j = 0; j < allResults.size(); j++) {
+                if(allResults.get(j) != stack.get(i)) {
+                    pq.add(allResults.get(j));
+                }
+            }
+            result = stack.remove(stack.lastIndexOf(stack.get(i)));
+            break;
+        }
+        if(result == -1) throw new IllegalArgumentException("something went wrong.");
+
+        return result;
     }
 }
