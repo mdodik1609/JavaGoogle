@@ -1,9 +1,6 @@
 package org.example.pattern16;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class Solution {
     /**
@@ -12,9 +9,14 @@ public class Solution {
      *  Pattern 16: Topological sort
      * */
     public static void main(String[] args){
+//        System.out.println(
+//                canFinish(
+//                        2, new int[][]{{1,0}}
+//                )
+//        );
         System.out.println(
-                canFinish(
-                        2, new int[][]{{1,0}}
+                findMinHeightTrees(
+                        4, new int[][]{ {1,0},{1,2},{1,3} }
                 )
         );
     }
@@ -103,6 +105,58 @@ public class Solution {
              }
          }
          if(coursesTaken != numCourses) return new int[]{};
+         return result;
+     }
+
+     /**
+      *     https://leetcode.com/problems/minimum-height-trees/
+      *
+      *     310. Minimum Height Trees
+      * */
+     public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
+         if (n == 0) return Collections.emptyList();
+         if (n == 1) {
+             List<Integer> r1 = new ArrayList<>();
+             r1.add(0);
+             return r1;
+         }
+
+         List<List<Integer>> adjList = new ArrayList<>(n);
+         for (int i = 0; i < n; i++) {
+             adjList.add(new ArrayList<Integer>());
+         }
+
+         int[] inDegree = new int[n];
+         for (int[] edge : edges) {
+             int firstEdge = edge[0];
+             int secondEdge = edge[1];
+
+             adjList.get(firstEdge).add(secondEdge);
+             adjList.get(secondEdge).add(firstEdge);
+
+             inDegree[firstEdge]++;
+             inDegree[secondEdge]++;
+         }
+
+         Queue<Integer> q = new LinkedList();
+         for (int i = 0; i < n; i++) {
+             if (inDegree[i] == 1) q.add(i);
+         }
+
+         List<Integer> result = new ArrayList<>();
+         while (!q.isEmpty()) {
+             result = new ArrayList<>();
+             int size = q.size();
+             for (int i = 0; i < size; i++) {
+                 int node = q.poll();
+                 result.add(node);
+                 inDegree[node]--;
+                 for (int childNode : adjList.get(node)) {
+                     inDegree[childNode]--;
+                     if (inDegree[childNode] == 1) q.add(childNode);
+                 }
+             }
+         }
          return result;
      }
 }
