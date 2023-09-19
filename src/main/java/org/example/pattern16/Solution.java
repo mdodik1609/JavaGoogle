@@ -14,9 +14,14 @@ public class Solution {
 //                        2, new int[][]{{1,0}}
 //                )
 //        );
+//        System.out.println(
+//                findMinHeightTrees(
+//                        4, new int[][]{ {1,0},{1,2},{1,3} }
+//                )
+//        );
         System.out.println(
-                findMinHeightTrees(
-                        4, new int[][]{ {1,0},{1,2},{1,3} }
+                replace(
+                        new HashMap<>(Map.of("USER", "admin", "HOME", "/%USER%/home")), "I am %USER% My home is %HOME%"
                 )
         );
     }
@@ -158,5 +163,60 @@ public class Solution {
              }
          }
          return result;
+     }
+
+     /**
+      *     https://leetcode.com/discuss/interview-question/2328651/Google-Phone-Interview-Question
+      *
+      *     Suppose we are creating a string replacement library. Given a map of string replacements, replace the value in the input string
+      *
+      *     Given map {X=>123, Y=456}
+      *     Input: %X%_%Y%
+      *     Output: 123_456
+      *
+      *     Given map {USER=>admin, HOME=>/%USER%/home}
+      *     Input: I am %USER% My home is %HOME%
+      *     Output: I am admin My home is /admin/home
+      * */
+     public static String replace(HashMap<String, String> replaceMap, String input) {
+         Map<String, Integer> inDegreeMap = new HashMap<>();
+
+         for (Map.Entry<String, String> entry : replaceMap.entrySet()) {
+             String key = entry.getKey();
+             String value = entry.getValue();
+
+             inDegreeMap.put(key, 0);
+
+             for (char c : value.toCharArray()) {
+                 if (c == '%') inDegreeMap.put(key, inDegreeMap.getOrDefault(key, 0) + 1);
+             }
+             inDegreeMap.put(key, inDegreeMap.getOrDefault(key, 0)/2);
+         }
+
+         Queue<String> q = new LinkedList<>();
+         for (Map.Entry<String, Integer> entry : inDegreeMap.entrySet()) {
+             if (entry.getValue() == 0) q.add(entry.getKey());
+         }
+
+         while(!q.isEmpty()) {
+             String current = q.poll();
+
+             current.substring(0, 1);
+
+             for (Map.Entry<String, String> entry : replaceMap.entrySet()) {
+                 if (entry.getValue().contains(current)) {
+                     replaceMap.put(entry.getKey(), entry.getValue().replace("%" + current + "%", replaceMap.get(current)));
+                     inDegreeMap.put(entry.getKey(), inDegreeMap.get(entry.getKey()) - 1);
+                     if (inDegreeMap.get(entry.getKey()) == 0) q.add(entry.getKey());
+                 }
+             }
+         }
+
+         for (Map.Entry<String, String> entry : replaceMap.entrySet()) {
+             input = input.replaceAll("%" + entry.getKey() + "%", entry.getValue());
+         }
+
+         System.out.format("Output is: %s", input);
+         return input;
      }
 }
