@@ -165,4 +165,24 @@ public class Solution {
         }
         return dp[n];
     }
+
+    /**
+     *  https://leetcode.com/problems/jump-game-ii/
+     *
+     *  45. Jump Game II
+     * */
+    public int jump(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+
+        for(int i = 0; i < n; i++) dp[i] = Integer.MAX_VALUE;
+
+        dp[0] = 0;
+        for(int i = 0; i < n - 1;i++) {
+            for(int j = i + 1; j < n && j <= nums[i] + i; j++) {
+                dp[j] = Math.min(dp[j], dp[i] + 1);
+            }
+        }
+        return dp[n-1];
+    }
 }
