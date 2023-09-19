@@ -62,4 +62,47 @@ public class Solution {
 
         return coursesTaken == numCourses;
      }
+     /**
+      *     https://leetcode.com/problems/course-schedule-ii/description/
+      *
+      *     210. Course Schedule II
+      * */
+     public int[] findOrder(int numCourses, int[][] prerequisites) {
+         List<List<Integer>> adjList = new ArrayList<>(numCourses);
+         for(int i = 0; i < numCourses;i++){
+             adjList.add(new ArrayList<>());
+         }
+
+         int[] inDegree = new int[numCourses];
+         for(int[] prereq : prerequisites){
+             int course = prereq[0];
+             int pre = prereq[1];
+             adjList.get(pre).add(course);
+             inDegree[course]++;
+         }
+
+         Queue<Integer> q = new LinkedList<>();
+         for(int i = 0; i < numCourses; i++) {
+             if(inDegree[i] == 0) {
+                 q.add(i);
+             }
+         }
+
+         int[] result = new int[numCourses];
+         int coursesTaken = 0;
+
+         while(!q.isEmpty()) {
+             int currentCourse = q.poll();
+             result[coursesTaken] = currentCourse;
+             coursesTaken++;
+
+
+             for(int adjCourse : adjList.get(currentCourse)) {
+                 inDegree[adjCourse]--;
+                 if(inDegree[adjCourse] == 0) q.add(adjCourse);
+             }
+         }
+         if(coursesTaken != numCourses) return new int[]{};
+         return result;
+     }
 }
