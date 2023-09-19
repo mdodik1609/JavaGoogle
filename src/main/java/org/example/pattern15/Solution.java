@@ -10,8 +10,14 @@ public class Solution {
 //        combinationSum(
 //                new int[]{2,3,7}, 7
 //        );
-        minCost(
-                9, new int[]{5,6,1,4,7}
+//        minCost(
+//                9, new int[]{5,6,1,4,7}
+//        );
+//        coinChange(
+//                new int[]{1,2,3}, 5
+//        );
+        coinChange(
+                new int[]{2}, 3
         );
     }
 
@@ -107,5 +113,37 @@ public class Solution {
             }
         }
         return dp[0][numOfCuts + 1];
+    }
+    /**
+     *  https://leetcode.com/problems/coin-change/
+     *
+     *  322. Coin change
+     * */
+    public static int coinChange(int[] coins, int amount) {
+        int n = coins.length;
+
+        int[][] dp = new int[n][amount + 1];
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j <= amount; j++) {
+                dp[i][j] = 10000 + 1;
+            }
+        }
+        for(int i = 0; i < n; i++) dp[i][0] = 0;
+
+        for(int i = 0; i < n;i++) {
+            for (int j = 1; j <= amount; j++) {
+                if(i > 0) {
+                    dp[i][j] = dp[i-1][j];
+                }
+                if(j >= coins[i]) {
+                    dp[i][j] = Math.min(
+                            dp[i][j],
+                            dp[i][j-coins[i]] + 1
+                    );
+                }
+            }
+        }
+        if(dp[n-1][amount] > 10000) return -1;
+        return dp[n - 1][amount];
     }
 }
