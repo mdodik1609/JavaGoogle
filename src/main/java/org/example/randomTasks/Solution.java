@@ -3,6 +3,7 @@ package org.example.randomTasks;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class Solution {
     /**
@@ -17,10 +18,18 @@ public class Solution {
 //                )
 //        );
 
+//        System.out.println(
+//                maxRoom(
+//                        new String[]{
+//                                "+1A", "+3E", "-1A", "+4F", "+1A", "-3E"
+//                        }
+//                )
+//        );
+
         System.out.println(
-                maxRoom(
-                        new String[]{
-                                "+1A", "+3E", "-1A", "+4F", "+1A", "-3E"
+                minNumMeetingRooms(
+                        new int[][] {
+                                {1,5},{2,5},{6,7},{5,6},{3,8}
                         }
                 )
         );
@@ -71,5 +80,33 @@ public class Solution {
             }
         }
         return maxRoom;
+    }
+
+    /**
+     *  https://leetcode.com/discuss/interview-question/356520
+     *
+     *  Meeting rooms II
+     * */
+    public static int minNumMeetingRooms(int[][] meetings) {
+        if(meetings.length == 0) return 0;
+        PriorityQueue<int[]> q = new PriorityQueue<>(
+                (a,b) -> a[1] - b[1]
+        );
+        Arrays.sort(
+                meetings, (a,b) -> a[0] - b[0]
+        );
+        q.add(meetings[0]);
+        for(int i = 1; i < meetings.length; i++) {
+            int[] earliest = q.poll();
+            int[] current = meetings[i];
+
+            if(earliest[1] <= current[0]) {
+                earliest[1] = current[1];
+            } else {
+                q.add(current);
+            }
+            q.add(earliest);
+        }
+        return q.size();
     }
 }
