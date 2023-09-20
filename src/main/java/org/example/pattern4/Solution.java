@@ -1,5 +1,6 @@
 package org.example.pattern4;
 
+import javax.swing.*;
 import java.util.*;
 
 public class Solution {
@@ -54,7 +55,7 @@ public class Solution {
 //                        {6,7,10},{2,4,11},{8,12,15}
 //                }
 //        ));
-        System.out.println(findMaxCPULoad(
+        System.out.println(maxCPULoadPQ(
                 new int[][] {
                         {1,4,2},{2,4,1},{3,6,5}
                 }
@@ -194,6 +195,26 @@ public class Solution {
         return jobs.stream().mapToInt(
                 it -> it[2]
         ).max().getAsInt();
+    }
+
+    public static int maxCPULoadPQ(int[][] intervals) {
+        Arrays.sort(intervals, (a,b) -> a[0] - b[0]);
+        PriorityQueue<int[]> q = new PriorityQueue<>(
+                (a,b) -> a[1] - b[1]
+        );
+        int maxLoad = 0;
+        int currentLoad = 0;
+
+        for(int[] interval : intervals) {
+            while(!q.isEmpty() && interval[0] > q.peek()[1]) {
+                currentLoad = currentLoad - q.poll()[2];
+            }
+
+            q.add(interval);
+            currentLoad = currentLoad + interval[2];
+            maxLoad = Math.max(currentLoad, maxLoad);
+        }
+        return maxLoad;
     }
 
 }
