@@ -1,6 +1,8 @@
 package org.example.randomTasks;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Solution {
     /**
@@ -9,9 +11,17 @@ public class Solution {
      *
      * */
     public static void main(String[] args) {
+//        System.out.println(
+//                minAbs(
+//                        new int[]{1,2,3,4,5}
+//                )
+//        );
+
         System.out.println(
-                minAbs(
-                        new int[]{1,2,3,4,5}
+                maxRoom(
+                        new String[]{
+                                "+1A", "+3E", "-1A", "+4F", "+1A", "-3E"
+                        }
                 )
         );
     }
@@ -32,6 +42,34 @@ public class Solution {
                 dp[j] = Math.max(dp[j], tasks[i] + dp[j - tasks[i]]);
             }
         }
-        return (sum - dp[halfSum]) - dp[halfSum];
+        return sum - dp[halfSum]* 2;
+    }
+
+    /**
+     *
+     *  https://leetcode.com/discuss/interview-question/421787/
+     *
+     * */
+    public static String maxRoom(String[] rooms) {
+        HashMap<String, Integer> freqMap = new HashMap<>();
+
+        for(String room : rooms) {
+            if(room.charAt(0) == '-') continue;
+
+            Character[] currentRoom = new Character[2];
+            currentRoom[0] = room.charAt(1);
+            currentRoom[1] = room.charAt(2);
+
+            freqMap.put(currentRoom.toString(), freqMap.getOrDefault(currentRoom.toString(), 0) + 1);
+        }
+        int max = 0;
+        String maxRoom = "";
+        for(Map.Entry<String, Integer> entry : freqMap.entrySet()) {
+            if(max < entry.getValue()) {
+                max = entry.getValue();
+                maxRoom = entry.getKey();
+            }
+        }
+        return maxRoom;
     }
 }
