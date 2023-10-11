@@ -9,8 +9,14 @@ class Solution {
     public static void main(String[] args) {
 //        System.out.println(characterReplacement("AAAA", 0));
 
+//        System.out.println(
+//                findAnagrams("baa", "aa")
+//        );
+
         System.out.println(
-                findAnagrams("baa", "aa")
+                minWindow(
+                        "ADOBECODEBANC", "ABC"
+                )
         );
     }
 
@@ -89,5 +95,57 @@ class Solution {
             } else return false;
         }
         return true;
+    }
+
+    /**
+     *  https://leetcode.com/problems/minimum-window-substring/description/
+     *
+     *
+     *  76. Minimum Window Substring
+     * */
+    public static String minWindow(String s, String t) {
+        HashMap<Character, Integer> freqMap = new HashMap<Character, Integer>();
+        for(int i = 0; i < t.length(); i++) {
+            Character curr = t.charAt(i);
+            if(freqMap.containsKey(curr)) {
+                freqMap.put(curr, freqMap.get(curr) + 1);
+            } else {
+                freqMap.put(curr, 1);
+            }
+        }
+
+        int start = 0;
+        int end = 0;
+        boolean match = false;
+        int matchNum = 0;
+        String result = "";
+        HashMap<Character, Integer> helperMap = new HashMap<>(freqMap);
+
+        for(;end < s.length(); end++) {
+            Character curr = s.charAt(end);
+            if(helperMap.containsKey(curr)) {
+                helperMap.put(curr, helperMap.get(curr) - 1);
+                if(helperMap.get(curr) == 0) matchNum++;
+                if(matchNum == freqMap.size()) match = true;
+            }
+
+            if((result.equals("") || result.length() > end - start + 1) && match) {
+                result = s.substring(start, end + 1);
+            }
+            while(match) {
+                Character tempStart = s.charAt(start);
+                if(helperMap.containsKey(tempStart)) {
+                    helperMap.put(tempStart, helperMap.get(tempStart) + 1);
+                    if(helperMap.get(tempStart) == 1) matchNum--;
+                    if(matchNum != freqMap.size()) match = false;
+                }
+                start++;
+                if((result.equals("") || result.length() > end - start + 1) && match) {
+                    result = s.substring(start, end + 1);
+                }
+            }
+        }
+
+        return result;
     }
 }
