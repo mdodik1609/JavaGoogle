@@ -13,11 +13,18 @@ class Solution {
 //                findAnagrams("baa", "aa")
 //        );
 
+//        System.out.println(
+//                minWindow(
+//                        "ADOBECODEBANC", "ABC"
+//                )
+//        );
+
         System.out.println(
-                minWindow(
-                        "ADOBECODEBANC", "ABC"
+                removeDuplicates(
+                        new int[]{0,0,1,1,1,2,2,3,3,4}
                 )
         );
+
     }
 
 
@@ -148,4 +155,77 @@ class Solution {
 
         return result;
     }
+
+    public static int removeDuplicates(int[] nums) {
+        int i = 0;
+        int j = 1;
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(nums[i]);
+        for(; j < nums.length; j++) {
+            if(result.get(i) != nums[j]){
+                i++;
+                result.add(nums[j]);
+            }
+        }
+        nums = result.stream().mapToInt(a -> a).toArray();
+        return result.size();
+    }
+
+    class Solution {
+        public static void sortColors(int[] nums) {
+            int i = 0;
+            int zeros = 0;
+            int twos = nums.length - 1;
+            while(i <= twos) {
+                if(nums[i] == 0) {
+                    nums[i] = nums[zeros];
+                    nums[zeros] = 0;
+                    i++; zeros++;
+                } else if(nums[i] == 1) {
+                    i++;
+                } else {
+                    nums[i] = nums[twos];
+                    nums[twos] = 2;
+                    twos--;
+                }
+            }
+        }
+    }
+
+    public static int findLengthOfShortestSubarray(int[] nums) {
+        int l = nums.length;
+        if (l == 0) return 0;
+
+        int low = 0;
+        int high = l - 1;
+
+        while (low < l - 1 && nums[low] <= nums[low + 1]) {
+            low++;
+        }
+
+        if (low == l) return 0; //sorted array
+
+        while (high > 0 && nums[high] >= nums[high - 1]) {
+            high--;
+        }
+
+
+        int minLength = Math.min(l - low - 1, high);
+        int k = low;
+        low = 0;
+
+        while (low <= k && high < l) {
+            if (nums[low] <= nums[high]) {
+                minLength = Math.min(minLength, high - low - 1);
+                low++;
+            } else {
+                high++;
+            }
+        }
+
+        if (minLength >= 0) return minLength;
+        return 0;
+    }
+
+
 }
