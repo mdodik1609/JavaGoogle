@@ -109,4 +109,37 @@ public class Solution {
         }
         return q.size();
     }
+
+    public static boolean canPartition(int[] nums) {
+        int l = nums.length;
+        if (l < 2) return false;
+
+        int sum = Arrays.stream(nums).sum();
+        if(sum % 2 != 0) return false;
+
+        sum = sum / 2;
+
+        boolean[][] cache = new boolean[l + 1][sum + 1];
+
+        for(int i = 0; i <= l; i++) {
+            for(int j = 0; j <= sum; j++) {
+                if(i == 0 || j == 0) cache[i][j] = false;
+                else if(nums[i-1] > j) cache[i][j] = cache[i-1][j];
+                else if(nums[i-1]==j) cache[i][j] = true;
+                else cache[i][j] = cache[i-1][j] || cache[i-1][j-nums[i-1]];
+            }
+        }
+        return cache[l][sum];
+    }
+
+    public static int minDifference(int[] nums) {
+        if(nums.length < 5) return 0;
+
+        Arrays.sort(nums);
+        int l = nums.length;
+        return Math.min(
+                Math.min(nums[l - 1] - nums[3], nums[l - 2] - nums[2]),
+                Math.min(nums[l - 3] - nums[1], nums[l - 4] - nums[0])
+        );
+    }
 }

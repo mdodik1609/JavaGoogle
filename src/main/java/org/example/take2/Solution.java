@@ -227,5 +227,40 @@ class Solution {
         return 0;
     }
 
+    public static int[][] insert(int[][] intervals, int[] interval) {
+        ArrayList<int[]> result = new ArrayList<>();
+        int i = 0;
 
+        while (i < intervals.length && intervals[i][1] < interval[0]) {
+            result.add(intervals[i]);
+            i++;
+        }
+        while (i < intervals.length && intervals[i][0] <= interval[1]) {
+            interval[0] = Math.min(intervals[i][0], interval[0]);
+            interval[1] = Math.max(intervals[i][1], interval[1]);
+            i++;
+        }
+        result.add(interval);
+        while (i < intervals.length) {
+            result.add(intervals[i]);
+            i++;
+        }
+        return result.toArray(new int[result.size()][]);
+    }
+
+    public static int missingNumber(int[] nums) {
+        int l = nums.length;
+        int result = l;
+        for (int i = 0; i < l; i++) {
+            if (nums[i] != i && nums[i] < l) {
+                int temp = nums[i];
+                nums[i] = nums[temp];
+                nums[temp] = temp;
+                i--;
+            } else if (nums[i] == l) {
+                result = i;
+            }
+        }
+        return result;
+    }
 }
